@@ -1,6 +1,5 @@
 package com.pragma.powerup.infrastructure.out.jpa.entity;
 
-import com.pragma.powerup.domain.model.RolModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,18 +41,4 @@ public class UserEntity {
     @JoinColumn(name = "rol",nullable = false)
     private RolEntity rol;
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", documentoIdentidad='" + documentoIdentidad + '\'' +
-                ", celular='" + celular + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", correo='" + correo + '\'' +
-                ", clave='" + clave + '\'' +
-                ", rol=" + rol +
-                '}';
-    }
 }

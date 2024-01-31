@@ -5,8 +5,8 @@ import com.pragma.powerup.domain.model.RolModel;
 import java.util.List;
 
 public interface IRolPersistencePort {
-    RolModel saveRol(RolModel rol);
-    RolModel getRolById(Long id);
+    RolModel saveRol(RolModel rolModel);
     List<RolModel> getAllRol();
+    RolModel getRolById(Long id);
     void deleteRolById(Long id);
 }

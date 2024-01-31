@@ -6,6 +6,7 @@ import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
 import com.pragma.powerup.infrastructure.out.jpa.entity.RolEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IRolEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IRolRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -13,33 +14,33 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class RolJpaAdapter implements IRolPersistencePort {
-
-    private final IRolEntityMapper iRolEntityMapper;
-    private final IRolRepository iRolRepository;
-    @Override
-    public RolModel saveRol(RolModel rol) {
-        RolEntity rolEntity = iRolRepository.save(iRolEntityMapper.toRolEntity(rol));
-        return iRolEntityMapper.toRolModel(rolEntity);
-    }
+    private final IRolEntityMapper rolEntityMapper;
+    private final IRolRepository rolRepository;
 
     @Override
-    public RolModel getRolById(Long id) {
-        Optional<RolEntity> optionalRolEntity = iRolRepository.findById(id);
-        RolEntity rolEntity = optionalRolEntity.orElse(null);
-        return iRolEntityMapper.toRolModel(rolEntity);
+    public RolModel saveRol(RolModel rolModel) {
+        RolEntity rolEntity = rolRepository.save(rolEntityMapper.toEntity(rolModel));
+        return rolEntityMapper.toRolModel(rolEntity);
     }
 
     @Override
     public List<RolModel> getAllRol() {
-        List<RolEntity> rolEntityList = iRolRepository.findAll();
+        List<RolEntity> rolEntityList = rolRepository.findAll();
         if(rolEntityList.isEmpty()){
             throw new NoDataFoundException();
         }
-        return iRolEntityMapper.toRolModelList(rolEntityList);
+        return rolEntityMapper.toRolModelList(rolEntityList);
+    }
+
+    @Override
+    public RolModel getRolById(Long id) {
+        Optional<RolEntity> optionalRolEntity = rolRepository.findById(id);
+        RolEntity rolEntity = optionalRolEntity.orElse(null);
+        return rolEntityMapper.toRolModel(rolEntity);
     }
 
     @Override
     public void deleteRolById(Long id) {
-        iRolRepository.deleteById(id);
+        rolRepository.deleteById(id);
     }
 }
