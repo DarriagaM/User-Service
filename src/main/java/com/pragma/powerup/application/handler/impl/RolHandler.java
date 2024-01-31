@@ -15,31 +15,32 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class RolHandler implements IRolHandler{
-    private final IRolServicePort iRolServicePort;
-    private final IRolRequestMapper iRolRequestMapper;
-    private final IRolResponseMapper iRolResponseMapper;
+public class RolHandler implements IRolHandler {
+
+    private final IRolServicePort rolServicePort;
+    private final IRolRequestMapper rolRequestMapper;
+    private final IRolResponseMapper rolResponseMapper;
 
     @Override
     public void saveRol(RolRequestDto rolRequestDto) {
-        RolModel rol = iRolRequestMapper.toRolModel(rolRequestDto);
-        iRolServicePort.saveRol(rol);
+        RolModel rolModel = rolRequestMapper.toRolModel(rolRequestDto);
+        rolServicePort.saveRol(rolModel);
     }
 
     @Override
     public RolResponseDto getRolById(Long id) {
-        RolModel rol = iRolServicePort.getRolById(id);
-        return iRolResponseMapper.toRolResponse(rol);
+        RolModel rolModel = rolServicePort.getRolById(id);
+        return rolResponseMapper.toRolResponseDto(rolModel);
     }
 
     @Override
     public List<RolResponseDto> getAllRol() {
-        List<RolModel> rolModelList = iRolServicePort.getAllRol();
-        return iRolResponseMapper.toRolResponseList(rolModelList);
+        List<RolModel> rolModelList = rolServicePort.getAllRol();
+        return rolResponseMapper.toRolResponseDtoList(rolModelList);
     }
 
     @Override
     public void deleteRolById(Long id) {
-        iRolServicePort.deleteRolById(id);
+        rolServicePort.deleteRolById(id);
     }
 }

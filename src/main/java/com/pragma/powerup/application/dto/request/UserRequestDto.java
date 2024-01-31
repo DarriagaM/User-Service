@@ -1,6 +1,5 @@
 package com.pragma.powerup.application.dto.request;
 
-import com.pragma.powerup.domain.model.RolModel;
 import lombok.Getter;
 import lombok.Setter;
 

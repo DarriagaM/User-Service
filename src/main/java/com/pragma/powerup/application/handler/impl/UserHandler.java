@@ -17,34 +17,34 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class UserHandler implements IUserHandler {
-    private final IUserServicePort iUserServicePort;
-    private final IUserResponseMapper iUserResponseMapper;
-    private final IUserRequestMapper iUserRequestMapper;
+    private final IUserServicePort userServicePort;
+    private final IUserResponseMapper userResponseMapper;
+    private final IUserRequestMapper userRequestMapper;
     @Override
     public void saveUser(UserRequestDto userRequestDto) {
-        UserModel user = iUserRequestMapper.toUser(userRequestDto);
-        iUserServicePort.saveUser(user);
+        UserModel user = userRequestMapper.toUser(userRequestDto);
+        userServicePort.saveUser(user);
     }
 
     @Override
     public UserResponseDto getUserById(Long id) {
-        UserModel user = iUserServicePort.getUserById(id);
-        return iUserResponseMapper.toUserResponse(user);
+        UserModel user = userServicePort.getUserById(id);
+        return userResponseMapper.toUserResponse(user);
     }
 
     @Override
     public boolean existsUserById(Long id) {
-        return iUserServicePort.existsUserById(id);
+        return userServicePort.existsUserById(id);
     }
 
     @Override
     public List<UserResponseDto> getAllUser() {
-        List<UserModel> userModelList = iUserServicePort.getAllUser();
-        return iUserResponseMapper.toUserResponseList(userModelList);
+        List<UserModel> userModelList = userServicePort.getAllUser();
+        return userResponseMapper.toUserResponseList(userModelList);
     }
 
     @Override
     public void deleteUserById(Long id) {
-        iUserServicePort.deleteUserById(id);
+        userServicePort.deleteUserById(id);
     }
 }

@@ -7,10 +7,10 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 @Mapper(componentModel = "spring",
-        unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        unmappedSourcePolicy = ReportingPolicy.IGNORE)
+        unmappedSourcePolicy = ReportingPolicy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface IRolEntityMapper {
-    RolEntity toRolEntity(RolModel rolModel);
+    RolEntity toEntity(RolModel rolModel);
     RolModel toRolModel(RolEntity rolEntity);
     List<RolModel> toRolModelList(List<RolEntity> rolEntityList);
 }
