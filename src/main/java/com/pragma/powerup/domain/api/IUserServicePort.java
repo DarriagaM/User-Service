@@ -11,4 +11,5 @@ public interface IUserServicePort {
     boolean existsUserById(Long id);
     List<UserModel> getAllUser();
     void deleteUserById(Long id);
+    UserModel getUserByEmail(String email);
 }

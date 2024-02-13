@@ -46,4 +46,11 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public UserModel getUserByEmail(String email) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findOneByEmail(email);
+        UserEntity userEntity = optionalUserEntity.orElse(null);
+        return userEntityMapper.toUserModel(userEntity);
+    }
 }

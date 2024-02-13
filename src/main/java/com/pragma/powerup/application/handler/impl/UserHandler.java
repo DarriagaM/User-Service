@@ -47,4 +47,10 @@ public class UserHandler implements IUserHandler {
     public void deleteUserById(Long id) {
         userServicePort.deleteUserById(id);
     }
+
+    @Override
+    public UserResponseDto getUserByEmail(String email) {
+        UserModel userModel = userServicePort.getUserByEmail(email);
+        return userResponseMapper.toUserResponse(userModel);
+    }
 }

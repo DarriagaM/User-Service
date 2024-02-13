@@ -60,7 +60,7 @@ public class RolRestController {
             @ApiResponse(responseCode = "200",description = "Rol delete",content = @Content),
             @ApiResponse(responseCode = "404",description = "Rol not found", content = @Content)
     })
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRolById(@PathVariable(value = "id")Long id){
         rolHandler.deleteRolById(id);
         return new ResponseEntity<>(HttpStatus.OK);

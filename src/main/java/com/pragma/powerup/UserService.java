@@ -2,12 +2,14 @@ package com.pragma.powerup;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-public class PowerUpApplication {
+@EnableFeignClients
+public class UserService {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PowerUpApplication.class, args);
+		SpringApplication.run(UserService.class, args);
 	}
 
 }

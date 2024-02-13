@@ -31,8 +31,8 @@ public class UserEntity {
     private String celular;
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
-    @Column(name = "correo",unique = true)
-    private String correo;
+    @Column(name = "email",unique = true)
+    private String email;
     @Column(name = "clave")
     private String clave;
 

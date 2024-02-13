@@ -11,4 +11,5 @@ public interface IUserHandler {
     boolean existsUserById(Long id);
     List<UserResponseDto> getAllUser();
     void deleteUserById(Long id);
+    UserResponseDto getUserByEmail(String email);
 }

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "409",description = "Owner already exists",content = @Content)
     })
     @PostMapping("/owner")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> saveOwner(@Valid @RequestBody UserRequestDto owner){
         userHandler.saveUser(owner);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -56,6 +58,11 @@ public class UserRestController {
         return ResponseEntity.ok(userHandler.getUserById(id));
     }
 
+    @GetMapping("email/{email}")
+    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable(value = "email") String email){
+        return ResponseEntity.ok(userHandler.getUserByEmail(email));
+    }
+
     @Operation(summary = "Exists user by id (boolean)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User exists", content = @Content),
@@ -71,7 +78,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "200", description = "User delete", content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
-    @DeleteMapping("/deleteUserById/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable(value = "id") Long id){
         userHandler.deleteUserById(id);
         return new ResponseEntity<>(HttpStatus.OK);
