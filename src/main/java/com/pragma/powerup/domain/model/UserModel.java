@@ -8,18 +8,16 @@ public class UserModel {
     private String apellido;
     private String documentoIdentidad;
     private String celular;
-    private LocalDate fechaNacimiento;
     private String email;
     private String clave;
     private RolModel rol;
 
-    public UserModel(Long id, String nombre, String apellido, String documentoIdentidad, String celular, LocalDate fechaNacimiento, String email, String clave, RolModel rol) {
+    public UserModel(Long id, String nombre, String apellido, String documentoIdentidad, String celular, String email, String clave, RolModel rol) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.documentoIdentidad = documentoIdentidad;
         this.celular = celular;
-        this.fechaNacimiento = fechaNacimiento;
         this.email = email;
         this.clave = clave;
         this.rol = rol;
@@ -67,14 +65,6 @@ public class UserModel {
 
     public void setCelular(String celular) {
         this.celular = celular;
-    }
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getEmail() {

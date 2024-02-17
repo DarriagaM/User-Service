@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -29,8 +30,6 @@ public class UserEntity {
     private String documentoIdentidad;
     @Column(name = "celular",length = 13)
     private String celular;
-    @Column(name = "fecha_nacimiento")
-    private LocalDate fechaNacimiento;
     @Column(name = "email",unique = true)
     private String email;
     @Column(name = "clave")

@@ -1,16 +1,17 @@
 package com.pragma.powerup.application.dto.request;
 
-import com.pragma.powerup.domain.model.RolModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserRequestDto {
+public class OwnerRequestDto {
     @NotBlank(message = "Nombre es requerido")
     private String nombre;
     @NotBlank(message = "Apellido es requerido")
@@ -22,6 +23,7 @@ public class UserRequestDto {
     @Pattern(regexp = "^\\+?\\d{1,12}$", message = "El número de celular debe contener máximo 13 caracteres y puede contener el símbolo '+' al inicio")
     private String celular;
 
+    private LocalDate fechaNacimiento;
     @NotBlank(message = "Correo es requerido")
     @Email(message = "Correo no valido")
     private String email;

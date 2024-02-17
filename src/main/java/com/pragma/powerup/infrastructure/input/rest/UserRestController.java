@@ -1,5 +1,6 @@
 package com.pragma.powerup.infrastructure.input.rest;
 
+import com.pragma.powerup.application.dto.request.OwnerRequestDto;
 import com.pragma.powerup.application.dto.request.UserRequestDto;
 import com.pragma.powerup.application.dto.response.UserResponseDto;
 import com.pragma.powerup.application.handler.IUserHandler;
@@ -31,8 +32,8 @@ public class UserRestController {
     })
     @PostMapping("/owner")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> saveOwner(@Valid @RequestBody UserRequestDto owner){
-        userHandler.saveUser(owner);
+    public ResponseEntity<Void> saveOwner(@Valid @RequestBody OwnerRequestDto owner){
+        userHandler.saveOwner(owner);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -45,6 +46,17 @@ public class UserRestController {
     @PreAuthorize("hasAuthority('PROPIETARIO')")
     public ResponseEntity<Void> saveEmployee(@Valid @RequestBody UserRequestDto employee){
         userHandler.saveRestaurantEmployee(employee);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Add new client")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",description = "Client Created",content = @Content),
+            @ApiResponse(responseCode = "409",description = "Client already exists",content = @Content)
+    })
+    @PostMapping("/client")
+    public ResponseEntity<Void> saveclient(@Valid @RequestBody UserRequestDto client){
+        userHandler.saveClient(client);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

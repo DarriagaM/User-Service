@@ -1,8 +1,10 @@
 package com.pragma.powerup.infrastructure.out.jpa.adapter;
 
+import com.pragma.powerup.domain.model.OwnerModel;
 import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
 import com.pragma.powerup.infrastructure.exception.NoDataFoundException;
+import com.pragma.powerup.infrastructure.out.jpa.entity.OwnerEntity;
 import com.pragma.powerup.infrastructure.out.jpa.entity.UserEntity;
 import com.pragma.powerup.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.pragma.powerup.infrastructure.out.jpa.repository.IUserRepository;
@@ -17,6 +19,12 @@ public class UserJpaAdapter implements IUserPersistencePort {
     private final IUserRepository userRepository;
     @Override
     public UserModel saveUser(UserModel user) {
+
+        if(user instanceof OwnerModel){
+            OwnerEntity ownerEntity = userRepository.save(userEntityMapper.toOwnerEntity((OwnerModel)user));
+            return userEntityMapper.toOwnerModel(ownerEntity);
+        }
+
         UserEntity userEntity = userRepository.save(userEntityMapper.toEntity(user));
         return userEntityMapper.toUserModel(userEntity);
     }
@@ -41,6 +49,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
         }
         return userEntityMapper.toUserModelList(userEntityList);
     }
+
 
     @Override
     public void deleteUserById(Long id) {

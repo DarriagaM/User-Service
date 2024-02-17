@@ -33,7 +33,7 @@ public class WebSecurityConfig {
         return  http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/user/delete/").permitAll()
+                .antMatchers("/user/client").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -73,6 +73,6 @@ public class WebSecurityConfig {
     }
 
 //    public static void main(String[] args) {
-//        System.out.println("pass: " + new BCryptPasswordEncoder().encode("admin"));
+//        System.out.println("pass: " + new BCryptPasswordEncoder().encode("clave"));
 //    }
 }

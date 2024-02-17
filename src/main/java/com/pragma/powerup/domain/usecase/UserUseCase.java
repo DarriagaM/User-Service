@@ -2,9 +2,7 @@ package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.exception.DomainException;
-import com.pragma.powerup.domain.model.EmployeeModel;
-import com.pragma.powerup.domain.model.RestaurantModel;
-import com.pragma.powerup.domain.model.UserModel;
+import com.pragma.powerup.domain.model.*;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
 import com.pragma.powerup.domain.spi.feignclient.IEmployeeFeignPort;
 import com.pragma.powerup.domain.spi.feignclient.IRestaurantFeignPort;
@@ -39,12 +37,22 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public void saveUser(UserModel user) {
 
-        //3 es el codigo para crear un propietario, validamos si el user autenticado es admin.
-        if(user.getRol().getId() == 3){
-            validateRolAdmin();
-            isLegalAge(user.getFechaNacimiento()); //prietario debe ser mayor de edad.
+        // si el user, es admin, se crea un propietario.
+        if(validateRol("ADMIN")){
+            OwnerModel ownerModel = (OwnerModel) user;
+            ownerModel.setRol(new RolModel(3L,null,null)); //3L es id rol en la bd.
+            isLegalAge(ownerModel.getFechaNacimiento());
         }
 
+        //si el user es propietario se crea un empleado
+        if(validateRol("PROPIETARIO")){
+            user.setRol(new RolModel(4L,null,null));
+        }
+
+        //si no hay autenticacion, se crea un cliente
+        if(token.getBearerToken() == null){
+            user.setRol(new RolModel(5L,null,null));
+        }
 
 
         user.setClave(userPasswordEncoderPort.encode(user.getClave()));
@@ -53,13 +61,9 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public void saveRestaurantEmployee(UserModel employee) {
-        String bearerToken = token.getBearerToken();
-        Long authenticatedUserId = token.getUserAuthenticatedId(bearerToken);
-
-        if(!token.getUserAuthenticatedRol(bearerToken).equals("PROPIETARIO"))
-            throw new DomainException("solo propietario puede crear empleados");
-
-        RestaurantModel restaurantModel = restaurantFeignPort.getRestaurantByIdOwner(authenticatedUserId);
+        RestaurantModel restaurantModel = restaurantFeignPort
+                                            .getRestaurantByIdOwner(token
+                                                    .getUserAuthenticatedId(token.getBearerToken()));
 
         if(restaurantModel == null)
             throw new DomainException("User debe ser propietario de un restaurante");
@@ -83,12 +87,13 @@ public class UserUseCase implements IUserServicePort {
         }
     }
 
-    public void validateRolAdmin(){
+    public boolean validateRol(String rol){
         String bearerToken = token.getBearerToken();
-        String userAutenticatedRol = token.getUserAuthenticatedRol(bearerToken);
-        if(!userAutenticatedRol.equals("ADMIN")){
-            throw new DomainException("Solo el Admin puede crear Propietario");
+        if(bearerToken == null){
+            return false;
         }
+        String userAuthenticatedRol = token.getUserAuthenticatedRol(bearerToken);
+        return userAuthenticatedRol.equals(rol);
 
     }
 

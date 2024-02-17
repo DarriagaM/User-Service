@@ -15,7 +15,6 @@ public class UserResponseDto {
     private String apellido;
     private String documentoIdentidad;
     private String celular;
-    private LocalDate fechaNacimiento;
     private String email;
     private String clave;
     private RolModel rol;
