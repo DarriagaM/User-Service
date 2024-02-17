@@ -25,6 +25,10 @@ public class UserModel {
         this.rol = rol;
     }
 
+    public UserModel() {
+
+    }
+
     public Long getId() {
         return id;
     }

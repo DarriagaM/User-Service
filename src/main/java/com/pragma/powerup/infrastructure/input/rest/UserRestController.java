@@ -36,6 +36,19 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Add new employee")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",description = "employee Created",content = @Content),
+            @ApiResponse(responseCode = "409",description = "employee already exists",content = @Content)
+    })
+    @PostMapping("/employee")
+    @PreAuthorize("hasAuthority('PROPIETARIO')")
+    public ResponseEntity<Void> saveEmployee(@Valid @RequestBody UserRequestDto employee){
+        userHandler.saveRestaurantEmployee(employee);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
     @Operation(summary = "Get all user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "All users returned",

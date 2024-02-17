@@ -2,9 +2,12 @@ package com.pragma.powerup.infrastructure.feignConfiguration;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Objects;
+@Component
 public class SecurityFeignRequestInterceptor implements RequestInterceptor {
     private static  final  String AUTHORIZATION_HEADER = "Authorization";
     @Override
@@ -13,8 +16,8 @@ public class SecurityFeignRequestInterceptor implements RequestInterceptor {
     }
 
     public static String getBearerTokenHeader(){
-        return ((ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes())
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder
+                .getRequestAttributes()))
                 .getRequest()
                 .getHeader("Authorization");
     }

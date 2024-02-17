@@ -1,13 +1,13 @@
 package com.pragma.powerup.application.dto.response;
 
 import com.pragma.powerup.domain.model.RolModel;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class UserResponseDto {
     private Long id;

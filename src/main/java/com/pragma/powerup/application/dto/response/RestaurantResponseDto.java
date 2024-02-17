@@ -1,14 +1,16 @@
 package com.pragma.powerup.application.dto.response;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-public class RolResponseDto {
+public class RestaurantResponseDto {
     private Long id;
     private String nombre;
-    private String descripcion;
+    private String nit;
+    private String direccion;
+    private String telefono;
+    private String urlLogo;
+    private Long idPropietario;
 }

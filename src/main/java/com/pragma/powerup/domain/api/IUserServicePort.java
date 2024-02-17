@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IUserServicePort {
     void saveUser(UserModel user);
+    void saveRestaurantEmployee(UserModel employee);
     UserModel getUserById(Long id);
     boolean existsUserById(Long id);
     List<UserModel> getAllUser();

@@ -2,8 +2,12 @@ package com.pragma.powerup.domain.usecase;
 
 import com.pragma.powerup.domain.api.IUserServicePort;
 import com.pragma.powerup.domain.exception.DomainException;
+import com.pragma.powerup.domain.model.EmployeeModel;
+import com.pragma.powerup.domain.model.RestaurantModel;
 import com.pragma.powerup.domain.model.UserModel;
 import com.pragma.powerup.domain.spi.IUserPersistencePort;
+import com.pragma.powerup.domain.spi.feignclient.IEmployeeFeignPort;
+import com.pragma.powerup.domain.spi.feignclient.IRestaurantFeignPort;
 import com.pragma.powerup.domain.spi.passwordencoder.IUserPasswordEncoderPort;
 import com.pragma.powerup.domain.spi.token.IToken;
 import org.mapstruct.control.MappingControl;
@@ -17,11 +21,19 @@ public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
     private final IUserPasswordEncoderPort userPasswordEncoderPort;
     private final IToken token;
+    private final IRestaurantFeignPort restaurantFeignPort;
+    private final IEmployeeFeignPort employeeFeignPort;
 
-    public UserUseCase(IUserPersistencePort userPersistencePort, IUserPasswordEncoderPort userPasswordEncoderPort, IToken token) {
+    public UserUseCase(IUserPersistencePort userPersistencePort,
+                       IUserPasswordEncoderPort userPasswordEncoderPort,
+                       IToken token,
+                       IRestaurantFeignPort restaurantFeignPort,
+                       IEmployeeFeignPort employeeFeignPort) {
         this.userPersistencePort = userPersistencePort;
         this.userPasswordEncoderPort = userPasswordEncoderPort;
         this.token = token;
+        this.restaurantFeignPort = restaurantFeignPort;
+        this.employeeFeignPort = employeeFeignPort;
     }
 
     @Override
@@ -37,6 +49,31 @@ public class UserUseCase implements IUserServicePort {
 
         user.setClave(userPasswordEncoderPort.encode(user.getClave()));
         userPersistencePort.saveUser(user);
+    }
+
+    @Override
+    public void saveRestaurantEmployee(UserModel employee) {
+        String bearerToken = token.getBearerToken();
+        Long authenticatedUserId = token.getUserAuthenticatedId(bearerToken);
+
+        if(!token.getUserAuthenticatedRol(bearerToken).equals("PROPIETARIO"))
+            throw new DomainException("solo propietario puede crear empleados");
+
+        RestaurantModel restaurantModel = restaurantFeignPort.getRestaurantByIdOwner(authenticatedUserId);
+
+        if(restaurantModel == null)
+            throw new DomainException("User debe ser propietario de un restaurante");
+
+        saveUser(employee);
+
+        String idRestaurant = String.valueOf(restaurantModel.getId());
+        String idUserEmployee = String.valueOf(userPersistencePort.getUserByEmail(employee.getEmail()).getId());
+
+        EmployeeModel employeeModel = new EmployeeModel();
+        employeeModel.setIdEmployee(idUserEmployee);
+        employeeModel.setIdRestaurant(idRestaurant);
+
+        employeeFeignPort.saveEmployee(employeeModel);
     }
 
     public void isLegalAge(LocalDate fechaNacimiento){

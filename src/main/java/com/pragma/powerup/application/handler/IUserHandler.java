@@ -7,9 +7,12 @@ import java.util.List;
 
 public interface IUserHandler {
     void saveUser(UserRequestDto userRequestDto);
+    void saveRestaurantEmployee(UserRequestDto employee);
     UserResponseDto getUserById(Long id);
     boolean existsUserById(Long id);
     List<UserResponseDto> getAllUser();
     void deleteUserById(Long id);
     UserResponseDto getUserByEmail(String email);
+
+
 }

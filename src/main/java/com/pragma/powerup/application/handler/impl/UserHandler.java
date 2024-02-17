@@ -27,6 +27,12 @@ public class UserHandler implements IUserHandler {
     }
 
     @Override
+    public void saveRestaurantEmployee(UserRequestDto employee) {
+        UserModel user = userRequestMapper.toUser(employee);
+        userServicePort.saveRestaurantEmployee(user);
+    }
+
+    @Override
     public UserResponseDto getUserById(Long id) {
         UserModel user = userServicePort.getUserById(id);
         return userResponseMapper.toUserResponse(user);
