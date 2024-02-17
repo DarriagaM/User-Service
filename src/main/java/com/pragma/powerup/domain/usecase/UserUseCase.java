@@ -54,7 +54,6 @@ public class UserUseCase implements IUserServicePort {
             user.setRol(new RolModel(5L,null,null));
         }
 
-
         user.setClave(userPasswordEncoderPort.encode(user.getClave()));
         userPersistencePort.saveUser(user);
     }
